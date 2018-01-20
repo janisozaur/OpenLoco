@@ -1,8 +1,5 @@
 #include <dirent.h>
 #include <cstring>
-#ifdef __linux__
-#include <sys/mman.h>
-#endif // __linux__
 #include "../environment.h"
 #include "../graphics/gfx.h"
 #include "../input.h"
@@ -331,19 +328,6 @@ fn_realloc(void *src, uint32_t size)
 void openloco::interop::register_hooks()
 {
     using namespace openloco::ui::windows;
-
-#ifdef __linux__
-    int err = mprotect((void *)0x401000, 0x4d7000 - 0x401000, PROT_READ | PROT_WRITE | PROT_EXEC);
-    if (err != 0)
-    {
-        perror("mprotect");
-    }
-    err = mprotect((void *)0x4d7000, 0x1199000 - 0x4d7000, PROT_READ | PROT_WRITE);
-    if (err != 0)
-    {
-        perror("mprotect");
-    }
-#endif // __linux__
 
     register_hook(0x004416B5,
                   [](registers &regs) -> uint8_t
