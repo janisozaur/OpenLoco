@@ -53,21 +53,21 @@ namespace openloco
     loco_global<HINSTANCE, 0x0113E0B4> ghInstance;
     loco_global<LPSTR, 0x00525348> glpCmdLine;
 #else
-    loco_global<char*, 0x00525348> glpCmdLine;
+    static loco_global<char*, 0x00525348> glpCmdLine;
 #endif
 
-    loco_global<char[256], 0x005060D0> gCDKey;
+    [[maybe_unused]] static loco_global<char[256], 0x005060D0> gCDKey;
 
-    loco_global<uint16_t, 0x0050C19C> time_since_last_tick;
-    loco_global<uint32_t, 0x0050C19E> last_tick_time;
-    loco_global<uint8_t, 0x00508F08> game_command_nest_level;
-    loco_global<uint16_t, 0x00508F12> _screen_age;
-    loco_global<uint8_t, 0x00508F14> _screen_flags;
-    loco_global<uint8_t, 0x00508F17> paused_state;
-    loco_global<uint8_t, 0x00508F1A> game_speed;
-    loco_global<uint8_t, 0x0050AF26> byte_50AF26;
-    loco_global<utility::prng, 0x00525E18> _prng;
-    loco_global<uint32_t, 0x00525F5E> _scenario_ticks;
+    static loco_global<uint16_t, 0x0050C19C> time_since_last_tick;
+    static loco_global<uint32_t, 0x0050C19E> last_tick_time;
+    static loco_global<uint8_t, 0x00508F08> game_command_nest_level;
+    static loco_global<uint16_t, 0x00508F12> _screen_age;
+    static loco_global<uint8_t, 0x00508F14> _screen_flags;
+    static loco_global<uint8_t, 0x00508F17> paused_state;
+    static loco_global<uint8_t, 0x00508F1A> game_speed;
+    static loco_global<uint8_t, 0x0050AF26> byte_50AF26;
+    static loco_global<utility::prng, 0x00525E18> _prng;
+    static loco_global<uint32_t, 0x00525F5E> _scenario_ticks;
 
     static void tick_logic(int32_t count);
     static void tick_logic();

@@ -5,7 +5,7 @@ using namespace openloco::interop;
 
 namespace openloco::intro
 {
-    loco_global<uint8_t, 0x0050C195> _state;
+    static loco_global<uint8_t, 0x0050C195> _state;
 
     bool is_active()
     {

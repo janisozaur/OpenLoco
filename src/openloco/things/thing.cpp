@@ -7,7 +7,7 @@
 using namespace openloco;
 using namespace openloco::interop;
 
-loco_global<uint8_t, 0x0050AF25> thing_zoom_max;
+static loco_global<uint8_t, 0x0050AF25> thing_zoom_max;
 
 // 0x0046FC83
 void thing::move_to(loc16 loc)

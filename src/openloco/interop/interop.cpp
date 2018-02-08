@@ -38,7 +38,7 @@ namespace openloco::interop
 
     // This variable serves a purpose of identifying a crash if it has happened inside original code.
     // When switching to original code, stack frame pointer is modified and prevents breakpad from providing stack trace.
-    volatile int32_t _originalAddress = 0;
+    volatile static int32_t _originalAddress = 0;
 
 #ifdef _ENABLE_CALL_BYVALUE_
     static int32_t DISABLE_OPT call_byval(int32_t address, int32_t _eax, int32_t _ebx, int32_t _ecx, int32_t _edx, int32_t _esi, int32_t _edi, int32_t _ebp)

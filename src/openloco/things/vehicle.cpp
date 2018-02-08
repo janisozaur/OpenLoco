@@ -15,12 +15,12 @@ using namespace openloco;
 using namespace openloco::interop;
 using namespace openloco::objectmgr;
 
-loco_global<vehicle*, 0x01136118> vehicle_1136118;
-loco_global<vehicle*, 0x01136124> vehicle_1136124;
-loco_global<vehicle*, 0x01136128> vehicle_1136128;
-loco_global<uint32_t, 0x01136130> vehicle_var_1136130;
-loco_global<uint8_t, 0x01136237> vehicle_var_1136237; // var_28 related?
-loco_global<uint8_t, 0x01136238> vehicle_var_1136238; // var_28 related?
+static loco_global<vehicle*, 0x01136118> vehicle_1136118;
+static loco_global<vehicle*, 0x01136124> vehicle_1136124;
+static loco_global<vehicle*, 0x01136128> vehicle_1136128;
+static loco_global<uint32_t, 0x01136130> vehicle_var_1136130;
+static loco_global<uint8_t, 0x01136237> vehicle_var_1136237; // var_28 related?
+static loco_global<uint8_t, 0x01136238> vehicle_var_1136238; // var_28 related?
 
 vehicle* vehicle::next_vehicle()
 {

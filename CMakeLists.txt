@@ -42,6 +42,7 @@ set(COMMON_COMPILE_OPTIONS
     -Wignored-qualifiers \
     -Winit-self \
     -Wmissing-declarations \
+    -Wmissing-variable-declarations \
     -Wnon-virtual-dtor \
     -Wnull-dereference \
     -Wstrict-aliasing \

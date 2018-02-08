@@ -70,9 +70,9 @@ namespace openloco::ui
 #ifdef _WIN32
     loco_global<void*, 0x00525320> _hwnd;
 #endif // _WIN32
-    loco_global<screen_info_t, 0x0050B884> screen_info;
-    loco_global<set_palette_func, 0x0052524C> set_palette_callback;
-    loco_global<uint8_t[256], 0x01140740> _keyboard_state;
+    static loco_global<screen_info_t, 0x0050B884> screen_info;
+    static loco_global<set_palette_func, 0x0052524C> set_palette_callback;
+    static loco_global<uint8_t[256], 0x01140740> _keyboard_state;
 
     static SDL_Window* window;
     static SDL_Surface* surface;

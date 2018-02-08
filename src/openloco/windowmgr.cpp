@@ -12,9 +12,9 @@ namespace openloco::ui::windowmgr
         constexpr uint16_t by_type = 1 << 7;
     }
 
-    loco_global<uint8_t, 0x005233B6> _current_modal_type;
-    loco_global<window[12], 0x011370AC> _windows;
-    loco_global<window*, 0x0113D754> _windows_end;
+    static loco_global<uint8_t, 0x005233B6> _current_modal_type;
+    static loco_global<window[12], 0x011370AC> _windows;
+    static loco_global<window*, 0x0113D754> _windows_end;
 
     window* get(size_t index)
     {

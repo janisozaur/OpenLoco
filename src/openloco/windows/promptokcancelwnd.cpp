@@ -18,12 +18,12 @@ namespace openloco::ui::windows
     };
 #pragma pack(pop)
 
-    loco_global<string_id, 0x0050AE3A> _ok_button_string_id;
-    loco_global<text_buffers_t*, 0x009D1078> _text_buffers;
-    loco_global<uint8_t, 0x009D1C9A> _result;
+    static loco_global<string_id, 0x0050AE3A> _ok_button_string_id;
+    static loco_global<text_buffers_t*, 0x009D1078> _text_buffers;
+    static loco_global<uint8_t, 0x009D1C9A> _result;
 
-    loco_global<char[512], 0x0112CC04> byte_112CC04;
-    loco_global<char[512], 0x0112CE04> byte_112CE04;
+    static loco_global<char[512], 0x0112CC04> byte_112CC04;
+    static loco_global<char[512], 0x0112CE04> byte_112CE04;
 
     // 0x00446F6B
     // eax: okButtonStringId
