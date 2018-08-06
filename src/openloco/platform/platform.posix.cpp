@@ -60,12 +60,16 @@ static char* readString(const char* value, size_t size)
         uint32_t readChar = read(&ptr);
         if (readChar == '{')
         {
+            uint8_t* start = ptr;
             do
             {
                 readChar = read(&ptr);
-                printf("%c", readChar);
             } while (readChar != '}');
-            printf("\n");
+
+            int len = ptr - start;
+            auto view = std::basic_string_view(start, len);
+
+            printf("[%.*s] %d\n", len, view.data(), len);
             continue;
         }
 
