@@ -4,6 +4,7 @@
 #include "../localisation/stringmgr.h"
 #include "../openloco.h"
 #include "platform.h"
+#include <cassert>
 #include <iostream>
 #include <pwd.h>
 #include <time.h>
@@ -16,7 +17,7 @@
 
 static openloco::interop::loco_global<char * [0xFFFF], 0x005183FC> _strings;
 
-uint32_t read(uint8_t** string)
+static uint32_t read(uint8_t** string)
 {
     uint32_t read = 0;
 
