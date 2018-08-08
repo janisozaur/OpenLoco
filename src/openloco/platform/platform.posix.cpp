@@ -150,6 +150,12 @@ int main(int argc, const char** argv)
         [[maybe_unused]] auto value = yaml_document_get_node(&document, pair->value);
         int key2 = strtol(reinterpret_cast<const char*>(key->data.scalar.value), nullptr, 10);
 
+        if (key2 == 337 || key2 == 338 || key2 == 1250 || key2 == 1506 || key2 == 1719
+            || key2 == 2039 || key2 == 2040 || key2 == 2042 || key2 == 2045)
+        {
+            continue;
+        }
+
         auto str = readString(reinterpret_cast<const char*>(value->data.scalar.value), value->data.scalar.length);
 
         if (str != nullptr)
