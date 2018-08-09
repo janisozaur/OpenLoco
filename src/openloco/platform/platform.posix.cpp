@@ -8,7 +8,7 @@
 #include <iostream>
 #include <pwd.h>
 #include <time.h>
-#include <yaml.h>
+#include <yaml-cpp/yaml.h>
 
 #ifdef __linux__
 #include <sys/types.h>
@@ -50,7 +50,7 @@ static uint32_t read(uint8_t** string)
     return read;
 }
 
-static char* readString(const char* value, size_t size)
+[[maybe_unused]] static char* readString(const char* value, size_t size)
 {
 
     char* str = (char*)malloc(size);
@@ -282,22 +282,11 @@ static char* readString(const char* value, size_t size)
 
 int main(int argc, const char** argv)
 {
-    FILE* file = fopen("/Users/Marijn/de-DE.yml", "rb");
-
-    yaml_parser_t parser;
-    yaml_document_t document;
-    yaml_parser_initialize(&parser);
-    yaml_parser_set_input_file(&parser, file);
-    yaml_parser_load(&parser, &document);
-    [[maybe_unused]] auto node = yaml_document_get_root_node(&document);
-    assert(node->type == YAML_MAPPING_NODE);
-
-    int i = 0;
-    for (auto pair = node->data.mapping.pairs.start; pair < node->data.mapping.pairs.top; pair++)
+    YAML::Node node = YAML::LoadFile("/Users/Marijn/de-DE.yml");
+    [[maybe_unused]] auto type = node.Type();
+    for (YAML::const_iterator it = node.begin(); it != node.end(); ++it)
     {
-        [[maybe_unused]] auto key = yaml_document_get_node(&document, pair->key);
-        [[maybe_unused]] auto value = yaml_document_get_node(&document, pair->value);
-        int key2 = strtol(reinterpret_cast<const char*>(key->data.scalar.value), nullptr, 10);
+        int key2 = it->first.as<int>();
 
         if (key2 == 337 || key2 == 338 || key2 == 1250 || key2 == 1506 || key2 == 1719
             || key2 == 2039 || key2 == 2040 || key2 == 2042 || key2 == 2045)
@@ -305,21 +294,17 @@ int main(int argc, const char** argv)
             continue;
         }
 
-        auto str = readString(reinterpret_cast<const char*>(value->data.scalar.value), value->data.scalar.length);
+        std::string str2 = it->second.as<std::string>();
+
+        auto str = readString(str2.data(), str2.length());
 
         if (str != nullptr)
         {
             _strings[key2] = str;
             printf("%4d |%s|\n", key2, str);
         }
-
-        i++;
     }
 
-    yaml_document_delete(&document);
-
-    yaml_parser_delete(&parser);
-    fclose(file);
     openloco::interop::load_sections();
     openloco::lpCmdLine((char*)argv[0]);
     openloco::main();

@@ -167,7 +167,7 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CMAKE_SHARED_LINKER_FLAG
 
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
 SET(SDL2LIBS ${SDL2_LDFLAGS})
-find_library (YML yaml)
+find_library (YAMLCPP yaml-cpp)
 
 if (USE_BOOST_FILESYSTEM)
     set(Boost_USE_STATIC_LIBS OFF)
@@ -193,7 +193,7 @@ else ()
     set_target_properties(${PROJECT} PROPERTIES LINK_FLAGS ${LOCO_SEGMENT_LINKER_FLAGS})
 endif ()
 target_link_libraries(${PROJECT} SDL2 ${SDL2LIBS})
-target_link_libraries(${PROJECT} ${YML})
+target_link_libraries(${PROJECT} ${YAMLCPP})
 if (NOT MINGW)
     add_dependencies(${PROJECT} segfiles)
 endif()
