@@ -28,6 +28,7 @@
 #include "input.h"
 #include "interop/interop.hpp"
 #include "intro.h"
+#include "localisation/languagefiles.h"
 #include "localisation/string_ids.h"
 #include "objects/objectmgr.h"
 #include "openloco.h"
@@ -728,6 +729,7 @@ namespace openloco
                 call(0x00407B26);
                 ui::initialise_input();
                 audio::initialise_dsound();
+                localisation::loadLanguageFile();
                 run();
                 audio::dispose_dsound();
                 ui::dispose_cursors();
