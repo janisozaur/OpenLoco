@@ -4,7 +4,9 @@
 #else
 #include <experimental/filesystem>
 #endif
+
 #include <fstream>
+#include <iostream>
 #include <yaml-cpp/yaml.h>
 
 #ifdef _WIN32
@@ -58,13 +60,20 @@ namespace openloco::config
         auto configPath = environment::get_path(environment::path_id::openloco_cfg);
 
 #ifdef _OPENLOCO_USE_BOOST_FS_
+        std::cout << configPath.string() << "\n";
         YAML::Node config = YAML::LoadFile(configPath.string());
 #else
         YAML::Node config = YAML::LoadFile(configPath);
 #endif
 
+        // Not a valid config file? Fall back to defaults.
+        if (!config.IsMap())
+            return _new_config;
+
         if (config["loco_install_path"])
             _new_config.loco_install_path = config["loco_install_path"].as<std::string>();
+        if (config["language"])
+            _new_config.language = config["language"].as<std::string>();
         if (config["breakdowns_disabled"])
             _new_config.breakdowns_disabled = config["breakdowns_disabled"].as<bool>();
 
@@ -96,6 +105,7 @@ namespace openloco::config
         YAML::Emitter out;
         out << YAML::BeginMap;
         out << YAML::Key << "loco_install_path" << YAML::Value << _new_config.loco_install_path;
+        out << YAML::Key << "language" << YAML::Value << _new_config.language;
         out << YAML::Key << "breakdowns_disabled" << YAML::Value << _new_config.breakdowns_disabled;
         out << YAML::EndMap;
 
