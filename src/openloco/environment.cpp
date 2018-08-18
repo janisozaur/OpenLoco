@@ -205,7 +205,7 @@ namespace openloco::environment
             case path_id::plugin2:
             case path_id::gamecfg:
             case path_id::scores:
-            case path_id::openloco_cfg:
+            case path_id::openloco_yml:
                 return platform::get_user_directory();
             default:
                 return get_loco_install_path();
