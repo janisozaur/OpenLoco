@@ -4,9 +4,7 @@
 #else
 #include <experimental/filesystem>
 #endif
-
 #include <fstream>
-#include <iostream>
 #include <yaml-cpp/yaml.h>
 
 #ifdef _WIN32
@@ -60,7 +58,6 @@ namespace openloco::config
         auto configPath = environment::get_path(environment::path_id::openloco_cfg);
 
 #ifdef _OPENLOCO_USE_BOOST_FS_
-        std::cout << configPath.string() << "\n";
         YAML::Node config = YAML::LoadFile(configPath.string());
 #else
         YAML::Node config = YAML::LoadFile(configPath);
