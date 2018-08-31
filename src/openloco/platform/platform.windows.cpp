@@ -80,6 +80,11 @@ namespace openloco::platform
 
         return result;
     }
+
+    fs::path openloco::platform::GetCurrentExecutablePath()
+    {
+        return WIN32_GetModuleFileNameW(nullptr);
+    }
 }
 
 #endif

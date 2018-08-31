@@ -28,6 +28,7 @@
 #include "input.h"
 #include "interop/interop.hpp"
 #include "intro.h"
+#include "localisation/languagefiles.h"
 #include "localisation/string_ids.h"
 #include "objects/objectmgr.h"
 #include "openloco.h"
@@ -250,6 +251,7 @@ namespace openloco
         call(0x004078BE);
         call(0x004BF476);
         environment::resolve_paths();
+        localisation::loadLanguageFile();
         progressbar::begin(string_ids::loading, 0);
         progressbar::set_progress(30);
         startup_checks();

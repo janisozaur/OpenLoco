@@ -132,7 +132,7 @@ namespace openloco::string_ids
     constexpr string_id wcolour2_stringid2 = 457;
 
     constexpr string_id audio_device_none = 479;
-    constexpr string_id audio_device_name = 480;
+    constexpr string_id stringptr = 480;
 
     constexpr string_id title_menu_new_game = 613;
     constexpr string_id title_menu_load_game = 614;
@@ -367,6 +367,11 @@ namespace openloco::string_ids
     constexpr string_id text_input_cursor = UNUSED_STR(2003);
 
     constexpr string_id buffer_2039 = 2039;
+    constexpr string_id buffer_2040 = 2040;
+
+    constexpr string_id buffer_2042 = 2042;
+
+    constexpr string_id buffer_2045 = 2045;
 
     constexpr string_id export_plugin_objects = 2089;
     constexpr string_id export_plugin_objects_tip = 2090;
