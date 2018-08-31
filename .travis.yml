@@ -1,7 +1,7 @@
 language: c
 
 before_install:
-    - docker pull openrct2/openloco:$DOCKERIMG
+    - docker pull janisozaur/openloco:$DOCKERIMG
 
 sudo: required
 dist: trusty
@@ -68,4 +68,4 @@ matrix:
 
 script:
     - mkdir build
-    - docker run -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
+    - docker run -v $(pwd):/openloco -w /openloco/build -i -t janisozaur/openloco:$DOCKERIMG bash -c "cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
