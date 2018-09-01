@@ -71,4 +71,4 @@ matrix:
 
 script:
     - mkdir build
-    - docker run -e CMAKE_MODULE_PATH=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "find / -name yaml-cpp-config.cmake && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
+    - docker run -e yaml-cpp_DIR=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "printenv && echo && echo && find / -name yaml-cpp-config.cmake && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
