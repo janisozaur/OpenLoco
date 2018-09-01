@@ -13,7 +13,7 @@ matrix:
             - docker
           env:
             - OPENLOCO_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=release"
-            - CMAKE_MODULE_PATH=/usr/lib/x86_64-linux-gnu/cmake/yaml-cpp
+            - CMAKE_MODULE_PATH=/usr/lib/i386-linux-gnu/cmake/yaml-cpp
             - DOCKERIMG=ubuntu-i686
         - os: linux
           services:
@@ -71,4 +71,4 @@ matrix:
 
 script:
     - mkdir build
-    - docker run -e yaml-cpp_DIR=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "printenv && echo && echo && find / -name yaml-cpp-config.cmake && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
+    - docker run -e yaml-cpp_DIR=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "printenv && echo && echo && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
