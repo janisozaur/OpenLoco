@@ -1,7 +1,7 @@
 language: c
 
 before_install:
-    - docker pull openrct2/openloco:$DOCKERIMG
+    - docker pull janisozaur/openloco:$DOCKERIMG
 
 sudo: required
 dist: trusty
@@ -13,7 +13,7 @@ matrix:
             - docker
           env:
             - OPENLOCO_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=release"
-            - CMAKE_MODULE_PATH=/usr/lib/i386-linux-gnu/cmake/yaml-cpp
+            - CMAKE_MODULE_PATH=/usr/lib/i386-linux-gnu/cmake
             - DOCKERIMG=ubuntu-i686
         - os: linux
           services:
@@ -26,8 +26,7 @@ matrix:
           services:
             - docker
           env:
-            - OPENLOCO_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=release -DBOOST_ROOT=/usr/i686-w64-mingw32/sys-root/mingw/"
-            - CMAKE_MODULE_PATH=/usr/i686-w64-mingw32/sys-root/mingw/CMake/
+            - OPENLOCO_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=release -DBOOST_ROOT=/usr/i686-w64-mingw32/sys-root/mingw/ -Dyaml-cpp_DIR=/usr/i686-w64-mingw32/sys-root/mingw/CMake/"
             - DOCKERIMG=fedora-mingw32
         - os: linux
           before_install: []
@@ -71,4 +70,4 @@ matrix:
 
 script:
     - mkdir build
-    - docker run -e yaml-cpp_DIR=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t openrct2/openloco:$DOCKERIMG bash -c "printenv && echo && echo && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
+    - docker run -e yaml-cpp_DIR=$CMAKE_MODULE_PATH -v $(pwd):/openloco -w /openloco/build -i -t janisozaur/openloco:$DOCKERIMG bash -c "printenv && echo && echo && cmake ../ ${OPENLOCO_CMAKE_OPTS} && ninja -k0"
