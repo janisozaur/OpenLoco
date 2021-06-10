@@ -102,9 +102,11 @@ namespace OpenLoco::TownManager
                 }
             }
 
-            // Write new history point.
-            currTown.history[currTown.history_size - 1] = popSteps & 0xFF;
-
+            if (currTown.history_size > 0)
+            {
+                // Write new history point.
+                currTown.history[currTown.history_size - 1] = popSteps & 0xFF;
+            }
             // Find historical maximum population.
             uint8_t maxPopulation = 0;
             for (int i = 0; i < currTown.history_size; i++)
