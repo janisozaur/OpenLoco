@@ -23,6 +23,8 @@ SECTIONS
   .gnu.version    : { *(.gnu.version) }
   .gnu.version_d  : { *(.gnu.version_d) }
   .gnu.version_r  : { *(.gnu.version_r) }
+  .loco_text      0x401000 : { *(.loco_text) }
+  .loco_data               : { *(.loco_data) }
   .rel.dyn        :
     {
       *(.rel.init)
@@ -53,8 +55,6 @@ SECTIONS
   .plt            : { *(.plt) *(.iplt) }
 .plt.got        : { *(.plt.got) }
 .plt.sec        : { *(.plt.sec) }
-  .loco_text      0x401000 : { *(.loco_text) }
-  .loco_data               : { *(.loco_data) }
   .text           :
   {
     *(.text.unlikely .text.*_unlikely .text.unlikely.*)
