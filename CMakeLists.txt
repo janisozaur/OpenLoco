@@ -107,7 +107,9 @@ if (NOT MSVC)
     -Wformat \
     -Wignored-qualifiers \
     -Winit-self \
-    -Wmissing-declarations \
+    -Wno-missing-declarations \
+    -Wno-effc++ \
+    -Wno-shadow \
     -Wnon-virtual-dtor \
     -Wnull-dereference \
     -Wstrict-aliasing \
@@ -256,15 +258,14 @@ find_package(SDL2_mixer REQUIRED)
 
 find_package(PNG REQUIRED)
 
-find_package(yaml-cpp REQUIRED HINTS /usr/lib32/cmake/yaml-cpp)
-include_directories(${YAML_CPP_INCLUDE_DIR})
-set(YAML_CPP_LIBRARIES yaml-cpp)
-
-# breakpad is also required
-if (MSVC)
-    find_package(unofficial-breakpad CONFIG REQUIRED)
-    set(BREAKPAD_LIBRARIES unofficial::breakpad::libbreakpad unofficial::breakpad::libbreakpad_client)
-endif ()
+# The hint provided here is targetting Arch Linux, a distro of choice for many contributors
+if ("${CMAKE_SYSTEM_NAME}" MATCHES "(Free|Net|Open|DragonFly)BSD")
+    find_package(yaml-cpp REQUIRED)
+    include_directories(${YAML_CPP_INCLUDE_DIR})
+else()
+endif()
+include_directories(/usr/include/SDL2/)
+include_directories("${CMAKE_SOURCE_DIR}/yaml-cpp/include")
 
 # Disable optimizations for interop.cpp for all compilers, to allow optimized
 # builds without need for -fno-omit-frame-pointer
@@ -290,8 +291,10 @@ else ()
     endif ()
 endif ()
 
+add_subdirectory(yaml-cpp)
+
 target_link_libraries(${PROJECT} ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
-target_link_libraries(${PROJECT} ${YAML_CPP_LIBRARIES})
+target_link_libraries(${PROJECT} yaml-cpp)
 target_link_libraries(${PROJECT} ${PNG_LIBRARIES})
 
 if (WIN32)
