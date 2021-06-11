@@ -252,6 +252,7 @@ namespace OpenLoco::Scenario
         registerHook(
             0x0043C88C,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043C88C");
                 registers backup = regs;
                 reset();
                 regs = backup;
@@ -261,6 +262,7 @@ namespace OpenLoco::Scenario
         registerHook(
             0x0043C90C,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043C90C");
                 registers backup = regs;
                 generateLandscape();
                 regs = backup;
@@ -270,6 +272,7 @@ namespace OpenLoco::Scenario
         registerHook(
             0x0049685C,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0049685C");
                 registers backup = regs;
                 initialiseDate(regs.ax);
                 regs = backup;

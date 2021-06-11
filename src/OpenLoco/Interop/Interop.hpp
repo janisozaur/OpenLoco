@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Utility/String.hpp"
+#include "../log.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>

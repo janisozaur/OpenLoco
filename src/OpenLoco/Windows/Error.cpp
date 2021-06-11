@@ -189,6 +189,7 @@ namespace OpenLoco::Ui::Windows::Error
         registerHook(
             0x00431A8A,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00431A8A");
                 Ui::Windows::Error::open(regs.bx, regs.dx);
                 return 0;
             });
@@ -196,6 +197,7 @@ namespace OpenLoco::Ui::Windows::Error
         registerHook(
             0x00431908,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00431908");
                 Ui::Windows::Error::openWithCompetitor(regs.bx, regs.dx, regs.al);
                 return 0;
             });

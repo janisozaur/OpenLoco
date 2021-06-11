@@ -685,12 +685,14 @@ namespace OpenLoco::S5
         registerHook(
             0x00441C26,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00441C26");
                 auto path = fs::u8path(std::string(_savePath));
                 return save(path, static_cast<SaveFlags>(regs.eax)) ? 0 : X86_FLAG_CARRY;
             });
         registerHook(
             0x00441FA7,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00441FA7");
                 auto path = fs::u8path(std::string_view(_savePath));
                 return load(path, regs.eax) ? X86_FLAG_CARRY : 0;
             });

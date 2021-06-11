@@ -66,6 +66,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0043454F,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043454F");
                 registers backup = regs;
                 Windows::CompanyWindow::open(regs.ax);
                 regs = backup;
@@ -76,6 +77,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004345EE,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004345EE");
                 registers backup = regs;
                 Windows::CompanyWindow::openFinances(regs.ax);
                 regs = backup;
@@ -86,6 +88,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x00434731,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00434731");
                 registers backup = regs;
                 Windows::CompanyWindow::openChallenge(regs.ax);
                 regs = backup;
@@ -96,6 +99,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0043CB9F,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043CB9F");
                 Windows::TitleMenu::editorInit();
 
                 return 0;
@@ -104,6 +108,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0043DA43,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043DA43");
                 registers backup = regs;
                 Windows::LandscapeGeneration::open();
                 regs = backup;
@@ -114,6 +119,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0043EE58,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043EE58");
                 registers backup = regs;
                 Windows::ScenarioOptions::open();
                 regs = backup;
@@ -124,6 +130,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004B6033,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004B6033");
                 registers backup = regs;
                 auto* w = Windows::Vehicle::Main::open(reinterpret_cast<Vehicles::VehicleBase*>(regs.edx));
                 regs = backup;
@@ -134,6 +141,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0045EFDB,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0045EFDB");
                 registers backup = regs;
                 auto window = (Ui::window*)regs.esi;
                 window->viewportZoomIn(false);
@@ -144,6 +152,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0045F015,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0045F015");
                 registers backup = regs;
                 auto window = (Ui::window*)regs.esi;
                 window->viewportZoomOut(false);
@@ -154,6 +163,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0045F18B,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0045F18B");
                 registers backup = regs;
                 callViewportRotateEventOnAllWindows();
                 regs = backup;
@@ -164,6 +174,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0045FCE6,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0045FCE6");
                 registers backup = regs;
                 xy32 mouse = { regs.ax, regs.bx };
                 auto pos = Ui::screenGetMapXyWithZ(mouse, regs.bp);
@@ -183,6 +194,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004610F2,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004610F2");
                 registers backup = regs;
                 Map::TileManager::mapInvalidateSelectionRect();
                 regs = backup;
@@ -193,6 +205,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x00456D2D,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00456D2D");
                 registers backup = regs;
                 Windows::Industry::open(regs.dx);
                 regs = backup;
@@ -203,6 +216,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x00495685,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00495685");
                 registers backup = regs;
                 const char* buffer = (const char*)regs.esi;
                 uint16_t width = Gfx::getStringWidth(buffer);
@@ -215,6 +229,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x00499B7E,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00499B7E");
                 registers backup = regs;
                 auto window = Windows::Town::open(regs.dx);
                 regs = backup;
@@ -226,6 +241,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x0048F210,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0048F210");
                 registers backup = regs;
                 auto window = Windows::Station::open(regs.dx);
                 regs = backup;
@@ -237,6 +253,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004577FF,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004577FF");
                 registers backup = regs;
                 auto window = Windows::IndustryList::open();
                 regs = backup;
@@ -248,6 +265,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x00428F8B,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00428F8B");
                 registers backup = regs;
                 Ui::Windows::NewsWindow::open(regs.ax);
                 regs = backup;
@@ -258,6 +276,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004B93A5,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004B93A5");
                 registers backup = regs;
                 sub_4B93A5(regs.bx);
                 regs = backup;
@@ -268,6 +287,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C5C69,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C5C69");
                 registers backup = regs;
                 Gfx::setDirtyBlocks(regs.ax, regs.bx, regs.dx, regs.bp);
                 regs = backup;
@@ -278,6 +298,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9984,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9984");
                 registers backup = regs;
                 invalidateAllWindowsAfterInput();
                 regs = backup;
@@ -288,6 +309,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9A95,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9A95");
                 registers backup = regs;
                 auto window = findAt(regs.ax, regs.bx);
                 regs = backup;
@@ -299,6 +321,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9AFA,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9AFA");
                 registers backup = regs;
                 auto window = findAtAlt(regs.ax, regs.bx);
                 regs = backup;
@@ -310,6 +333,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9B56,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9B56");
                 Ui::window* w;
                 if (regs.cx & FindFlag::byType)
                 {
@@ -332,6 +356,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CA4BD,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CA4BD");
                 registers backup = regs;
                 auto window = (Ui::window*)regs.esi;
                 if (window != nullptr)
@@ -345,6 +370,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CB966,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CB966");
                 registers backup = regs;
                 if (regs.al < 0)
                 {
@@ -366,6 +392,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CC692,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC692");
                 registers backup = regs;
                 if ((regs.cx & FindFlag::byType) != 0)
                 {
@@ -383,6 +410,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CC6EA,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC6EA");
                 registers backup = regs;
                 auto window = (Ui::window*)regs.esi;
                 close(window);
@@ -393,6 +421,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CD296,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CD296");
                 registers backup = regs;
                 relocateWindows();
                 regs = backup;
@@ -403,6 +432,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CD3D0,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CD3D0");
                 dispatchUpdateAll();
                 return 0;
             });
@@ -410,6 +440,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CE3D6,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CE3D6");
                 registers backup = regs;
                 Input::toolCancel();
                 regs = backup;
@@ -420,6 +451,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CE438,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CE438");
                 auto w = getMainWindow();
 
                 regs.esi = (uintptr_t)w;
@@ -434,6 +466,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CEE0B,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CEE0B");
                 registers backup = regs;
                 sub_4CEE0B((Ui::window*)regs.esi);
                 regs = backup;
@@ -444,6 +477,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9F5D,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9F5D");
                 registers backup = regs;
 
                 auto w = createWindow((WindowType)regs.cl, Gfx::point_t(regs.ax, regs.eax >> 16), Gfx::ui_size_t(regs.bx, regs.ebx >> 16), regs.ecx >> 8, (window_event_list*)regs.edx);
@@ -456,6 +490,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004C9C68,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004C9C68");
                 registers backup = regs;
 
                 auto w = createWindow((WindowType)regs.cl, Gfx::ui_size_t(regs.bx, (((uint32_t)regs.ebx) >> 16)), regs.ecx >> 8, (window_event_list*)regs.edx);
@@ -468,6 +503,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CF456,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CF456");
                 registers backup = regs;
                 closeAllFloatingWindows();
                 regs = backup;
@@ -478,6 +514,7 @@ namespace OpenLoco::Ui::WindowManager
         registerHook(
             0x004CD3A9,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CD3A9");
                 registers backup = regs;
 
                 auto w = bringToFront((WindowType)regs.cx, regs.dx);

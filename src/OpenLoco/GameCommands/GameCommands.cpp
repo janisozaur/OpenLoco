@@ -135,6 +135,7 @@ namespace OpenLoco::GameCommands
         registerHook(
             0x00431315,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00431315");
                 registers backup = regs;
                 auto ebx = doCommand(GameCommand(regs.esi), backup);
 

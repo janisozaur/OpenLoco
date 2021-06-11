@@ -12,6 +12,7 @@
 #endif // _WIN32
 
 #include "../Console.h"
+#include "../log.hpp"
 #include "Interop.hpp"
 
 #pragma warning(disable : 4731) // frame pointer register 'ebp' modified by inline assembly code
@@ -27,6 +28,7 @@
 #define DISABLE_OPT
 #endif // defined(__GNUC__)
 
+static uint32_t depth = 0;
 namespace OpenLoco::Interop
 {
     // This variable serves a purpose of identifying a crash if it has happened inside original code.
@@ -95,6 +97,14 @@ namespace OpenLoco::Interop
 
     static int32_t DISABLE_OPT callByRef(int32_t address, int32_t* _eax, int32_t* _ebx, int32_t* _ecx, int32_t* _edx, int32_t* _esi, int32_t* _edi, int32_t* _ebp)
     {
+        //save_state state_entry(0x401000, 0x4d7000);
+        std::string indent;
+        for (uint32_t i = 0; i < depth; i++)
+        {
+            indent += "> ";
+        }
+        WriteLine("enter %s0x%08x", indent.c_str(), address);
+        depth += 1;
 #ifdef _LOG_INTEROP_CALLS_
         OpenLoco::Console::group("0x%x", address);
 #endif
@@ -255,6 +265,10 @@ namespace OpenLoco::Interop
 #ifdef _LOG_INTEROP_CALLS_
         OpenLoco::Console::groupEnd();
 #endif
+        WriteLine("exit %s0x%08x", indent.c_str(), address);
+        depth -= 1;
+        //save_state state_exit(0x401000, 0x4d7000);
+        //save_state::logDiff(state_entry, state_exit);
         // lahf only modifies ah, zero out the rest
         return result & 0xFF00;
     }

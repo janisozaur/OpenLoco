@@ -1256,6 +1256,7 @@ namespace OpenLoco::Ui::Windows::Construction
         registerHook(
             0x0049F1B5,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0049F1B5");
                 registers backup = regs;
                 Construction::activateSelectedConstructionWidgets();
                 regs = backup;

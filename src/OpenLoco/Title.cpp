@@ -258,12 +258,14 @@ namespace OpenLoco::Title
         registerHook(
             0x0046AD7D,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0046AD7D");
                 start();
                 return 0;
             });
         registerHook(
             0x004442C4,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004442C4");
                 loadTitle();
                 return 0;
             });

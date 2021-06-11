@@ -3,6 +3,7 @@
 #include "../Localisation/FormatArguments.hpp"
 #include "../Localisation/StringManager.h"
 #include "../OpenLoco.h"
+#include "../log.hpp"
 #include "WindowManager.h"
 
 using namespace OpenLoco::Interop;
@@ -102,6 +103,7 @@ namespace OpenLoco::Ui::ProgressBar
         registerHook(
             0x004CF5C5,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CF5C5");
                 registers backup = regs;
                 begin(regs.eax);
                 regs = backup;
@@ -111,6 +113,7 @@ namespace OpenLoco::Ui::ProgressBar
         registerHook(
             0x004CF621,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CF621");
                 registers backup = regs;
                 setProgress(regs.eax);
                 regs = backup;
@@ -120,6 +123,7 @@ namespace OpenLoco::Ui::ProgressBar
         registerHook(
             0x004CF60B,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CF60B");
                 registers backup = regs;
                 end();
                 regs = backup;

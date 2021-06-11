@@ -31,6 +31,7 @@
 #include "../Utility/String.hpp"
 #include "../Vehicles/Vehicle.h"
 #include "../ViewportManager.h"
+#include "../log.hpp"
 #include "Interop.hpp"
 
 using namespace OpenLoco;
@@ -497,6 +498,7 @@ static void STDCALL lib_PostQuitMessage(int32_t exitCode)
 static void registerMemoryHooks()
 {
     using namespace OpenLoco::Interop;
+    WriteLine("registerMemoryHooks");
 
     // Hook Locomotion's alloc / free routines so that we don't
     // allocate a block in one module and freeing it in another.
@@ -509,6 +511,7 @@ static void registerMemoryHooks()
 static void registerNoWin32Hooks()
 {
     using namespace OpenLoco::Interop;
+    WriteLine("registerNoWin32Hooks");
 
     writeJmp(0x40447f, (void*)&fn_40447f);
     writeJmp(0x404b68, (void*)&fn_404b68);
@@ -581,6 +584,7 @@ void OpenLoco::Interop::loadSections()
 static void registerAudioHooks()
 {
     using namespace OpenLoco::Interop;
+    WriteLine("registerAudioHooks");
 
     writeJmp(0x0040194E, (void*)&audioLoadChannel);
     writeJmp(0x00401999, (void*)&audioPlayChannel);
@@ -593,30 +597,35 @@ static void registerAudioHooks()
     registerHook(
         0x0048A18C,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x0048A18C");
             Audio::updateSounds();
             return 0;
         });
     registerHook(
         0x00489C6A,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00489C6A");
             Audio::stopVehicleNoise();
             return 0;
         });
     registerHook(
         0x0048A4BF,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x0048A4BF");
             Audio::playSound((Vehicles::Vehicle2or6*)regs.esi);
             return 0;
         });
     registerHook(
         0x00489CB5,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00489CB5");
             Audio::playSound((Audio::SoundId)regs.eax, { regs.cx, regs.dx, regs.bp }, regs.ebx);
             return 0;
         });
     registerHook(
         0x00489F1B,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00489F1B");
             Audio::playSound((Audio::SoundId)regs.eax, { regs.cx, regs.dx, regs.bp }, regs.edi, regs.ebx);
             return 0;
         });
@@ -637,6 +646,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00431695,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00431695");
             registers backup = regs;
 
             OpenLoco::sub_431695(0);
@@ -647,6 +657,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004416B5,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004416B5");
             using namespace OpenLoco::Environment;
 
             auto buffer = (char*)0x009D0D72;
@@ -663,6 +674,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004524C1,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004524C1");
             Ui::update();
             return 0;
         });
@@ -670,6 +682,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00407BA3,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00407BA3");
             auto cursor = (Ui::CursorId)regs.edx;
             Ui::setCursor(cursor);
             return 0;
@@ -678,6 +691,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00446F6B,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00446F6B");
             auto result = Ui::Windows::PromptOkCancel::open(regs.eax);
             regs.eax = result ? 1 : 0;
             return 0;
@@ -686,6 +700,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00407231,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00407231");
             OpenLoco::Input::sub_407231();
             return 0;
         });
@@ -693,6 +708,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00451025,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00451025");
             registers backup = regs;
             auto pos = Gfx::drawString((Gfx::Context*)regs.edi, regs.cx, regs.dx, regs.al, (uint8_t*)regs.esi);
             regs = backup;
@@ -706,6 +722,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00490F6C,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00490F6C");
             Ui::Windows::StationList::open(regs.ax);
             return 0;
         });
@@ -713,6 +730,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004958C6,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004958C6");
             registers backup = regs;
             char* buffer = StringManager::formatString((char*)regs.edi, regs.eax, (void*)regs.ecx);
             regs = backup;
@@ -723,6 +741,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x00438A6C,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x00438A6C");
             Gui::init();
             return 0;
         });
@@ -733,6 +752,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004A2AD7,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004A2AD7");
             addr<0x001135F88, uint16_t>() = 0;
             regs.esi = 0x004A2AF0;
             regs.edi = 0x004A2CE7;
@@ -748,6 +768,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004CA4DF,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004CA4DF");
             registers backup = regs;
             auto window = (Ui::window*)regs.esi;
             auto context = (Gfx::Context*)regs.edi;
@@ -759,6 +780,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004CF63B,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004CF63B");
             registers backup = regs;
             Gfx::render();
             regs = backup;
@@ -788,6 +810,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x0046959C,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x0046959C");
             registers backup = regs;
             int16_t x = regs.eax;
             int16_t i = regs.ebx / 6;
@@ -803,6 +826,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004AB655,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004AB655");
             auto v = (Vehicles::VehicleBase*)regs.esi;
             v->asVehicleBody()->secondaryAnimationUpdate();
 
@@ -812,6 +836,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004392BD,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004392BD");
             Gui::resize();
             return 0;
         });
@@ -819,6 +844,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004C6456,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004C6456");
             registers backup = regs;
             auto window = (Ui::window*)regs.esi;
             window->viewportsUpdatePosition();
@@ -829,6 +855,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004C9513,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004C9513");
             registers backup = regs;
             auto window = (Ui::window*)regs.esi;
             int16_t x = regs.ax;
@@ -853,6 +880,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004CA115,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004CA115");
             registers backup = regs;
             auto window = (Ui::window*)regs.esi;
             window->updateScrollWidgets();
@@ -864,6 +892,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004CA17F,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004CA17F");
             registers backup = regs;
             auto window = (Ui::window*)regs.esi;
             window->initScrollWidgets();
@@ -875,6 +904,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004C57C0,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004C57C0");
             registers backup = regs;
 
             initialiseViewports();
@@ -885,6 +915,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x004C5DD5,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x004C5DD5");
             registers backup = regs;
 
             Gfx::redrawScreenRect(regs.ax, regs.bx, regs.dx, regs.bp);
@@ -901,6 +932,7 @@ void OpenLoco::Interop::registerHooks()
     registerHook(
         0x0047024A,
         [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+            WriteLine("hook 0x0047024A");
             registers backup = regs;
 
             auto* entity = reinterpret_cast<EntityBase*>(regs.esi);

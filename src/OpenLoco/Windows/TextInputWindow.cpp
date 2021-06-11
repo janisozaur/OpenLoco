@@ -8,6 +8,7 @@
 #include "../Ui/TextInput.h"
 #include "../Ui/WindowManager.h"
 #include "../Win32.h"
+#include "../log.hpp"
 #include <cassert>
 
 #ifdef _WIN32
@@ -69,6 +70,7 @@ namespace OpenLoco::Ui::Windows::TextInput
         registerHook(
             0x004CE523,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CE523");
                 registers backup = regs;
                 openTextInput((Ui::window*)regs.esi, regs.ax, regs.bx, regs.cx, regs.dx, (void*)0x0112C836);
                 regs = backup;
@@ -78,6 +80,7 @@ namespace OpenLoco::Ui::Windows::TextInput
         registerHook(
             0x004CE6C9,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CE6C9");
                 registers backup = regs;
                 sub_4CE6C9((WindowType)regs.cl, (window_number)regs.dx);
                 regs = backup;
@@ -87,6 +90,7 @@ namespace OpenLoco::Ui::Windows::TextInput
         registerHook(
             0x004CE6F2,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CE6F2");
                 registers backup = regs;
                 cancel();
                 regs = backup;

@@ -337,6 +337,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x0046112C,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0046112C");
                 registers backup = regs;
                 Map::TileManager::mapInvalidateMapSelectionTiles();
                 regs = backup;
@@ -345,6 +346,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CA2D0,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CA2D0");
                 registers backup = regs;
                 auto viewport = create(regs, 0);
                 regs = backup;
@@ -354,6 +356,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CA38A,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CA38A");
                 registers backup = regs;
                 auto viewport = create(regs, 1);
                 regs = backup;
@@ -363,36 +366,42 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CBA2D,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBA2D");
                 invalidate((Station*)regs.esi);
                 return 0;
             });
         registerHook(
             0x004CBB01,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBB01");
                 invalidate((EntityBase*)regs.esi, ZoomLevel::eighth);
                 return 0;
             });
         registerHook(
             0x004CBBD2,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBBD2");
                 invalidate((EntityBase*)regs.esi, ZoomLevel::quarter);
                 return 0;
             });
         registerHook(
             0x004CBCAC,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBCAC");
                 invalidate((EntityBase*)regs.esi, ZoomLevel::half);
                 return 0;
             });
         registerHook(
             0x004CBD86,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBD86");
                 invalidate((EntityBase*)regs.esi, ZoomLevel::full);
                 return 0;
             });
         registerHook(
             0x004CBE5F,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBE5F");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 Map::TileManager::mapInvalidateTileFull(pos);
                 return 0;
@@ -400,6 +409,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CBFBF,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CBFBF");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 invalidate(pos, regs.di, regs.si, ZoomLevel::eighth, 56);
                 return 0;
@@ -407,6 +417,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CC098,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC098");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 invalidate(pos, regs.di, regs.si, ZoomLevel::eighth);
                 return 0;
@@ -414,6 +425,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CC20F,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC20F");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 invalidate(pos, regs.di, regs.si, ZoomLevel::full);
                 return 0;
@@ -421,6 +433,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CC390,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC390");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 invalidate(pos, regs.di, regs.si, ZoomLevel::half);
                 return 0;
@@ -428,6 +441,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CC511,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CC511");
                 auto pos = Map::Pos2(regs.ax, regs.cx);
                 invalidate(pos, regs.di, regs.si, ZoomLevel::quarter);
                 return 0;
@@ -435,6 +449,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x004CEC25,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004CEC25");
                 registers backup = regs;
                 collectGarbage();
                 regs = backup;
@@ -443,6 +458,7 @@ namespace OpenLoco::Ui::ViewportManager
         registerHook(
             0x00459E54,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00459E54");
                 registers backup = regs;
                 auto [interaction, vp] = Ui::ViewportInteraction::getMapCoordinatesFromPos(regs.ax, regs.bx, regs.edx);
                 regs = backup;

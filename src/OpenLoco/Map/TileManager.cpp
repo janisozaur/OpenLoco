@@ -3,6 +3,7 @@
 #include "../Interop/Interop.hpp"
 #include "../Map/Map.hpp"
 #include "../ViewportManager.h"
+#include "../log.hpp"
 
 using namespace OpenLoco::Interop;
 
@@ -555,6 +556,7 @@ namespace OpenLoco::Map::TileManager
         registerHook(
             0x004612A6,
             [](registers& regs) -> uint8_t {
+                WriteLine("hook 0x004612A6");
                 createAnimation(regs.dh, { regs.ax, regs.cx }, regs.dl);
                 return 0;
             });

@@ -10,6 +10,7 @@
 #else
 #include <sys/mman.h>
 #endif // _WIN32
+#include "../log.hpp"
 #include "Interop.hpp"
 
 namespace OpenLoco::Interop
@@ -150,7 +151,8 @@ namespace OpenLoco::Interop
         data[i++] = 0xC3; // retn
 
 #ifdef _WIN32
-        WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
+        bool result = WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
+        WriteLine("hookFunc/WriteProcessMemory %d", result);
 #else
         // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
         memcpy((void*)address, data, i);
@@ -159,6 +161,7 @@ namespace OpenLoco::Interop
 
     void registerHook(uintptr_t address, hook_function function)
     {
+        WriteLine("registerHook address = 0x%08x, function = 0x%08x", address, function);
         if (!_hookTableAddress)
         {
             size_t size = _maxHooks * HOOK_BYTE_COUNT;
@@ -172,12 +175,17 @@ namespace OpenLoco::Interop
                 exit(1);
             }
 #endif // _WIN32
+            WriteLine("_hookTableAddress = %p", _hookTableAddress);
         }
         if (_hookTableOffset > _maxHooks)
         {
+            WriteLine("_hookTableOffset %d > _maxHooks %d", _hookTableOffset, _maxHooks);
             return;
         }
         uint32_t hookaddress = (uint32_t)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
+
+        WriteLine("registerHook address = 0x%08x, function = 0x%08x, hookaddress = 0x%08x", address, function, hookaddress);
+
         uint8_t data[9];
         int32_t i = 0;
         data[i++] = 0xE9; // jmp

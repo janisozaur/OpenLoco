@@ -373,6 +373,7 @@ namespace OpenLoco::Ui::Windows::BuildVehicle
         registerHook(
             0x004B92A5,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004B92A5");
                 registers backup = regs;
                 sub_4B92A5((Ui::window*)regs.esi);
                 regs = backup;
@@ -382,6 +383,7 @@ namespace OpenLoco::Ui::Windows::BuildVehicle
         registerHook(
             0x4C1AF7,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x4C1AF7");
                 registers backup = regs;
                 auto window = open(regs.eax, regs.eax);
                 regs = backup;

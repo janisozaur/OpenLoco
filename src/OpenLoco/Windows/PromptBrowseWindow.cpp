@@ -828,6 +828,7 @@ namespace OpenLoco::Ui::Windows::PromptBrowse
         registerHook(
             0x00445AB9,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00445AB9");
                 auto result = open(
                     (browse_type)regs.al,
                     (char*)regs.ecx,
@@ -840,6 +841,7 @@ namespace OpenLoco::Ui::Windows::PromptBrowse
         registerHook(
             0x00446E62,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x00446E62");
                 appendDirectory((char*)regs.ebp);
                 return 0;
             });

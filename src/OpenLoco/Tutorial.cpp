@@ -39,6 +39,7 @@ namespace OpenLoco::Tutorial
         registerHook(
             0x0043C7A2,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x0043C7A2");
                 registers backup = regs;
                 uint16_t next = nextInput();
                 regs = backup;

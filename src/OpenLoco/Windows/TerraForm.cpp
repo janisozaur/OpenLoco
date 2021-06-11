@@ -2267,6 +2267,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BC9E2,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BC9E2");
                 registers backup = regs;
                 AdjustLand::toolDragContinue((Ui::window&)regs.esi, (widget_index)regs.dx, (int16_t)regs.ax, (int16_t)regs.bx);
                 regs = backup;
@@ -2276,6 +2277,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BCA5D,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BCA5D");
                 registers backup = regs;
                 AdjustLand::toolDragEnd((Ui::window&)regs.esi, (widget_index)regs.dx);
                 regs = backup;
@@ -2285,6 +2287,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BCDBF,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BCDBF");
                 registers backup = regs;
                 AdjustWater::toolDragContinue((Ui::window&)regs.esi, (widget_index)regs.dx, (int16_t)regs.ax, (int16_t)regs.bx);
                 regs = backup;
@@ -2294,6 +2297,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BCDE8,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BCDE8");
                 registers backup = regs;
                 AdjustWater::toolDragEnd((Ui::window&)regs.esi, (widget_index)regs.dx);
                 regs = backup;
@@ -2303,6 +2307,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BC682,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BC682");
                 registers backup = regs;
                 ClearArea::toolDragContinue((Ui::window&)regs.esi, (widget_index)regs.dx, (int16_t)regs.ax, (int16_t)regs.bx);
                 regs = backup;
@@ -2312,6 +2317,7 @@ namespace OpenLoco::Ui::Windows::Terraform
         registerHook(
             0x004BC701,
             [](registers& regs) FORCE_ALIGN_ARG_POINTER -> uint8_t {
+                WriteLine("hook 0x004BC701");
                 registers backup = regs;
                 ClearArea::toolDragEnd((Ui::window&)regs.esi, (widget_index)regs.dx);
                 regs = backup;
