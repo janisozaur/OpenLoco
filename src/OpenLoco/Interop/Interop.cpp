@@ -325,6 +325,7 @@ namespace OpenLoco::Interop
 #ifdef _WIN32
         if (!WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, size, nullptr))
         {
+            WriteLine("writeMemory error: 0x%08x", GetLastError());
             throw std::runtime_error("WriteProcessMemory failed");
         }
 #else

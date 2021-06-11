@@ -151,8 +151,22 @@ namespace OpenLoco::Interop
         data[i++] = 0xC3; // retn
 
 #ifdef _WIN32
-        bool result = WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
-        WriteLine("hookFunc/WriteProcessMemory %d", result);
+        int retries = 10;
+        bool done = false;
+        while (!done && retries > 0)
+        {
+            bool result = WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
+            WriteLine("hookFunc/WriteProcessMemory %d, retries = %d", result, retries);
+            if (!result)
+            {
+                WriteLine("GetLastError = 0x%08x", GetLastError());
+            }
+            else
+            {
+                done = true;
+            }
+            retries--;
+        }
 #else
         // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
         memcpy((void*)address, data, i);
@@ -162,7 +176,8 @@ namespace OpenLoco::Interop
     void registerHook(uintptr_t address, hook_function function)
     {
         WriteLine("registerHook address = 0x%08x, function = 0x%08x", address, function);
-        if (!_hookTableAddress)
+        int retries = 10;
+        while (!_hookTableAddress && retries > 0)
         {
             size_t size = _maxHooks * HOOK_BYTE_COUNT;
 #ifdef _WIN32
@@ -176,6 +191,24 @@ namespace OpenLoco::Interop
             }
 #endif // _WIN32
             WriteLine("_hookTableAddress = %p", _hookTableAddress);
+            try
+            {
+                std::vector<uint8_t> buf(size);
+                writeMemory((uint32_t)_hookTableAddress, buf.data(), size);
+            }
+            catch (...)
+            {
+                WriteLine("Failed to write entire hook table!");
+                bool result = VirtualFreeEx(GetCurrentProcess(), _hookTableAddress, size, MEM_RELEASE);
+                WriteLine("Freeing _hookTableAddress = %p succeeded = %d", _hookTableAddress, result);
+                _hookTableAddress = nullptr;
+                retries--;
+            }
+        }
+        if (_hookTableAddress == nullptr)
+        {
+            WriteLine("Failed to allocate _hookTableAddress!!!");
+            throw std::runtime_error("Failed to allocate hooks memory");
         }
         if (_hookTableOffset > _maxHooks)
         {
@@ -224,6 +257,8 @@ namespace OpenLoco::Interop
     static void* makeJump(uint32_t address, void* fn)
     {
 
+        WriteLine("makeJump address = 0x%08x, fn = 0x%08x", address, fn);
+
         if (!_smallHooks)
         {
             size_t size = 20 * 500;
@@ -237,6 +272,8 @@ namespace OpenLoco::Interop
                 exit(1);
             }
 #endif // _WIN32
+
+            WriteLine("makeJump _smallHooks = 0x%08x", _smallHooks);
             _offset = static_cast<uint8_t*>(_smallHooks);
         }
 
