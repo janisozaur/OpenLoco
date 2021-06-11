@@ -31,7 +31,7 @@ namespace OpenLoco::Interop
     *(data + 2) = ((addr)&0x00ff0000) >> 16;  \
     *(data + 3) = ((addr)&0xff000000) >> 24;
 
-    static void hookFunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize)
+    static bool hookFunc(uintptr_t address, uintptr_t hookAddress, int32_t stacksize)
     {
         int32_t i = 0;
         uint8_t data[HOOK_BYTE_COUNT] = { 0 };
@@ -150,9 +150,9 @@ namespace OpenLoco::Interop
 
         data[i++] = 0xC3; // retn
 
+        bool done = false;
 #ifdef _WIN32
         int retries = 10;
-        bool done = false;
         while (!done && retries > 0)
         {
             bool result = WriteProcessMemory(GetCurrentProcess(), (LPVOID)address, data, i, 0);
@@ -168,9 +168,11 @@ namespace OpenLoco::Interop
             retries--;
         }
 #else
+        done = true;
         // We own the pages with PROT_WRITE | PROT_EXEC, we can simply just memcpy the data
         memcpy((void*)address, data, i);
 #endif // _WIN32
+        return done;
     }
 
     void registerHook(uintptr_t address, hook_function function)
@@ -215,23 +217,31 @@ namespace OpenLoco::Interop
             WriteLine("_hookTableOffset %d > _maxHooks %d", _hookTableOffset, _maxHooks);
             return;
         }
-        uint32_t hookaddress = (uint32_t)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
 
-        WriteLine("registerHook address = 0x%08x, function = 0x%08x, hookaddress = 0x%08x", address, function, hookaddress);
+        bool done = false;
+        retries = 10;
+        while (!done && retries > 0)
+        {
+            uint32_t hookaddress = (uint32_t)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
 
-        uint8_t data[9];
-        int32_t i = 0;
-        data[i++] = 0xE9; // jmp
+            WriteLine("registerHook address = 0x%08x, function = 0x%08x, hookaddress = 0x%08x", address, function, hookaddress);
 
-        WRITE_ADDRESS_STRICTALIAS(&data[i], hookaddress - address - i - 4);
-        i += 4;
+            uint8_t data[9];
+            int32_t i = 0;
+            data[i++] = 0xE9; // jmp
 
-        data[i++] = 0xC3; // retn
+            WRITE_ADDRESS_STRICTALIAS(&data[i], hookaddress - address - i - 4);
+            i += 4;
 
-        writeMemory(address, data, i);
+            data[i++] = 0xC3; // retn
 
-        hookFunc(hookaddress, (uintptr_t)function, 0);
-        _hookTableOffset++;
+            writeMemory(address, data, i);
+
+            done = hookFunc(hookaddress, (uintptr_t)function, 0);
+            _hookTableOffset++;
+            retries--;
+            WriteLine("registerHook done = %d, retries = %d", done, retries);
+        }
     }
 
     void writeRet(uint32_t address)
