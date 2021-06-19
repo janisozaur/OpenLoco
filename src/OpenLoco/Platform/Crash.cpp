@@ -1,5 +1,6 @@
 #include "Crash.h"
 #include "../../Thirdparty/sentry-native/include/sentry.h"
+#include <cstdio>
 #if defined(USE_BREAKPAD)
 #include "../Utility/String.hpp"
 #include "Platform.h"
@@ -100,16 +101,29 @@ CExceptionHandler crash_init()
     /* ... */
 
     // make sure everything flushes
-
+    sentry_value_t character = sentry_value_new_object();
+    sentry_value_set_by_key(character, "name", sentry_value_new_string("Mighty Fighter"));
+    sentry_value_set_by_key(character, "age", sentry_value_new_int32(19));
+    sentry_value_set_by_key(character, "attack_type", sentry_value_new_string("melee"));
+    sentry_set_context("character", character);
+    sentry_value_t crumb = sentry_value_new_breadcrumb("default", "Authenticated user");
+    sentry_value_set_by_key(crumb, "category", sentry_value_new_string("auth"));
+    sentry_value_set_by_key(crumb, "level", sentry_value_new_string("info"));
+    sentry_add_breadcrumb(crumb);
     sentry_capture_event(sentry_value_new_message_event(
         /*   level */ SENTRY_LEVEL_INFO,
         /*  logger */ "custom",
         /* message */ "It works!"));
+    printf("Sentry initialised!\n");
     return nullptr;
 #endif // USE_BREAKPAD
 }
 
 void crash_close()
 {
+    printf("Flushing Sentry...\n");
+    uint8_t* myptr = nullptr;
+    *myptr = 42;
     sentry_close();
+    printf(" done.\n");
 }
