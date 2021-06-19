@@ -99,6 +99,7 @@ set(COMMON_COMPILE_OPTIONS
     -Wignored-qualifiers \
     -Winit-self \
     -Wno-missing-declarations \
+    -Wno-missing-field-initializers \
     -Wno-effc++ \
     -Wno-shadow \
     -Wnon-virtual-dtor \
@@ -166,8 +167,8 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DDEBUG=${DEBUG_LEVEL}")
 
 # add source files
-file(GLOB_RECURSE OLOCO_SOURCES "src/*.cpp")
-file(GLOB_RECURSE OLOCO_HEADERS "src/*.h" "src/*.hpp")
+file(GLOB_RECURSE OLOCO_SOURCES "src/OpenLoco/*.cpp")
+file(GLOB_RECURSE OLOCO_HEADERS "src/OpenLoco/*.h" "src/OpenLoco/*.hpp")
 
 if (APPLE)
     file(GLOB_RECURSE OLOCO_MM_SOURCES "src/*.mm")
