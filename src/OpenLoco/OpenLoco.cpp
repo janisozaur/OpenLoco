@@ -358,6 +358,7 @@ namespace OpenLoco
             printf("Removing temp file '%s'\n", path8.c_str());
             fs::remove(tempFilePath);
         }
+        crash_close();
 
         // SDL_Quit();
         exit(0);

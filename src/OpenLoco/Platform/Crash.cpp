@@ -1,4 +1,5 @@
 #include "Crash.h"
+#include "../../Thirdparty/sentry-native/include/sentry.h"
 #if defined(USE_BREAKPAD)
 #include "../Utility/String.hpp"
 #include "Platform.h"
@@ -91,6 +92,24 @@ CExceptionHandler crash_init()
         GetDumpDirectory(), 0, OnCrash, 0, google_breakpad::ExceptionHandler::HANDLER_ALL, MiniDumpWithDataSegs, PipeName, 0);
     return reinterpret_cast<CExceptionHandler>(exHandler);
 #else  // USE_BREAKPAD
+    sentry_options_t* options = sentry_options_new();
+    sentry_options_set_dsn(options, "https://fb83bac50c4d484c98805c2c0301a90a@o199248.ingest.sentry.io/1309201");
+    sentry_options_set_release(options, "OpenLoco@21.06");
+    sentry_init(options);
+
+    /* ... */
+
+    // make sure everything flushes
+
+    sentry_capture_event(sentry_value_new_message_event(
+        /*   level */ SENTRY_LEVEL_INFO,
+        /*  logger */ "custom",
+        /* message */ "It works!"));
     return nullptr;
 #endif // USE_BREAKPAD
+}
+
+void crash_close()
+{
+    sentry_close();
 }

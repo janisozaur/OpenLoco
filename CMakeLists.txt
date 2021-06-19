@@ -106,7 +106,6 @@ set(COMMON_COMPILE_OPTIONS
     -Wnull-dereference \
     -Wstrict-aliasing \
     -Wstrict-overflow=1 \
-    -Wundef \
     -Wunreachable-code \
     ")
 
@@ -251,6 +250,7 @@ add_subdirectory(src/Thirdparty/sentry-native)
 target_link_libraries(${PROJECT} ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 target_link_libraries(${PROJECT} yaml-cpp)
 target_link_libraries(${PROJECT} ${PNG_LIBRARIES})
+target_link_libraries(${PROJECT} sentry)
 
 
 if (NOT MINGW)
