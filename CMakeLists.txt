@@ -245,6 +245,7 @@ else ()
 endif ()
 
 add_subdirectory(yaml-cpp)
+add_subdirectory(src/Thirdparty/sentry-native)
 
 target_link_libraries(${PROJECT} ${SDL2_LIBRARIES} ${SDL2_MIXER_LIBRARIES})
 target_link_libraries(${PROJECT} yaml-cpp)
