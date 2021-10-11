@@ -8,7 +8,7 @@ void consoleinit()
 {
     if (!_log_stream)
     {
-        auto env = OpenLoco::platform::GetCurrentExecutablePath().parent_path() / "OpenLoco.log";
+        auto env = OpenLoco::Platform::getCurrentExecutablePath().parent_path() / "OpenLoco.log";
         std::string path = env.string();
         printf("Logging to %s\n", path.c_str());
         _log_stream.open(path, std::ios::out);
