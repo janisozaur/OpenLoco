@@ -7,7 +7,7 @@ Multi-Arch: no
 Build-Depends: debhelper (>= 9), cmake (>= 3.9), libsdl2-dev, libsdl2-mixer-dev, g++ (>= 4:7), libpng-dev, libyaml-cpp-dev
 
 Package: openloco
-Architecture: i386
+Architecture: any
 Homepage: https://github.com/OpenLoco/OpenLoco
 Vcs-Browser: https://github.com/OpenLoco/OpenLoco
 Vcs-Git: https://github.com/OpenLoco/OpenLoco
