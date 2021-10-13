@@ -1,0 +1,19 @@
+Source: openloco
+Maintainer: Michał Janiszewski <janisozaur+openloco@gmail.com>
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+Multi-Arch: same
+Build-Depends: debhelper (>= 9), cmake (>= 3.9), libsdl2-dev, libsdl2-mixer-dev, g++ (>= 4:7), libpng-dev, libyaml-cpp-dev
+
+Package: openloco
+Architecture: i386
+Homepage: https://github.com/OpenLoco/OpenLoco
+Vcs-Browser: https://github.com/OpenLoco/OpenLoco
+Vcs-Git: https://github.com/OpenLoco/OpenLoco
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: innoextract
+Description: An open source re-implementation of Chris Sawyer's Locomotion
+ An open source clone of Chris Sawyer's Locomotion built by decompiling the
+ original game one bit at a time.
+ Requires original game assets.
