@@ -3,7 +3,7 @@ Maintainer: Michał Janiszewski <janisozaur+openloco@gmail.com>
 Section: misc
 Priority: optional
 Standards-Version: 3.9.2
-Multi-Arch: same
+Multi-Arch: no
 Build-Depends: debhelper (>= 9), cmake (>= 3.9), libsdl2-dev, libsdl2-mixer-dev, g++ (>= 4:7), libpng-dev, libyaml-cpp-dev
 
 Package: openloco
