@@ -807,8 +807,8 @@ namespace OpenLoco::Input
                     if (!window->viewportIsFocusedOnEntity())
                     {
                         auto invert = Config::getNew().invertRightMouseViewPan ? -1 : 1;
-                        auto offsetX = dragOffset.x << (vp->zoom + 1);
-                        auto offsetY = dragOffset.y << (vp->zoom + 1);
+                        auto offsetX = dragOffset.x * (1 << (vp->zoom + 1));
+                        auto offsetY = dragOffset.y * (1 << (vp->zoom + 1));
 
                         window->viewportConfigurations[0].saved_view_x += offsetX * invert;
                         window->viewportConfigurations[0].saved_view_y += offsetY * invert;
