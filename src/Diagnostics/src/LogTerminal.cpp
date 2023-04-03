@@ -19,14 +19,6 @@ namespace OpenLoco::Diagnostics::Logging
 
     LogTerminal::LogTerminal()
     {
-#ifdef _WIN32
-        // Enable colors.
-        HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        DWORD dwMode = 0;
-        GetConsoleMode(hOut, &dwMode);
-        dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-        SetConsoleMode(hOut, dwMode);
-#endif
     }
 
     void LogTerminal::print(Level level, std::string_view message)
