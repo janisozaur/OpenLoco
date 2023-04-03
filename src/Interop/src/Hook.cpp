@@ -168,11 +168,17 @@ namespace OpenLoco::Interop
 
     void registerHook(uintptr_t address, hook_function function)
     {
+        size_t size = kMaxHooks * kHookByteCount;
         if (!_hookTableAddress)
         {
-            size_t size = kMaxHooks * kHookByteCount;
 #ifdef _WIN32
-            _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+            if (_hookTableAddress == nullptr)
+            {
+                const auto errCode = static_cast<uint32_t>(GetLastError());
+                fprintf(stderr, "VirtualAllocEx for registerHook failed! size = %zu, GetLastError() = 0x%08x", size, errCode);
+            }
+
 #else
             _hookTableAddress = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
             if (_hookTableAddress == MAP_FAILED)
@@ -191,7 +197,7 @@ namespace OpenLoco::Interop
         // WriteProcessMemory for specific addresses that we fully own, but skipping over failing entry would work.
         bool done = false;
         int retries = 10;
-        while (!done && retries > 0)
+        while (!done && retries > 0 && _hookTableOffset < kMaxHooks)
         {
             uint32_t hookaddress = (uint32_t)_hookTableAddress + (_hookTableOffset * kHookByteCount);
             uint8_t data[9];
@@ -203,7 +209,31 @@ namespace OpenLoco::Interop
 
             data[i++] = 0xC3; // retn
 
+#ifdef _WIN32
+            {
+                DWORD oldProtect{};
+                SIZE_T protectSize = i;
+                BOOL protectResult = VirtualProtect(reinterpret_cast<void*>(address), protectSize, PAGE_READWRITE, &oldProtect);
+                if (protectResult)
+                {
+                    const auto errCode = static_cast<uint32_t>(GetLastError());
+                    fprintf(stderr, "VirtualProtect(rw) for registerHook failed! address = 0x%08x, size = %lu, GetLastError() = 0x%08x", address, protectSize, errCode);
+                }
+            }
+#endif
             writeMemory(address, data, i);
+#ifdef _WIN32
+            {
+                DWORD oldProtect{};
+                SIZE_T protectSize = i;
+                BOOL protectResult = VirtualProtect(reinterpret_cast<void*>(address), protectSize, PAGE_EXECUTE, &oldProtect);
+                if (protectResult)
+                {
+                    const auto errCode = static_cast<uint32_t>(GetLastError());
+                    fprintf(stderr, "VirtualProtect(x) for registerHook failed! address = 0x%08x, size = %lu, GetLastError() = 0x%08x", address, protectSize, errCode);
+                }
+            }
+#endif
 
             done = hookFunc(hookaddress, (uintptr_t)function, 0);
             _hookTableOffset++;
@@ -247,12 +277,17 @@ namespace OpenLoco::Interop
 
     static void* makeJump(uint32_t address, void* fn)
     {
+        size_t size = 20 * 500;
 
         if (!_smallHooks)
         {
-            size_t size = 20 * 500;
 #ifdef _WIN32
-            _smallHooks = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            _smallHooks = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+            if (_smallHooks == nullptr)
+            {
+                const auto errCode = static_cast<uint32_t>(GetLastError());
+                fprintf(stderr, "VirtualAllocEx for makeJump failed! size = %zu, GetLastError() = 0x%08x", size, errCode);
+            }
 #else
             _smallHooks = mmap(NULL, size, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
             if (_smallHooks == MAP_FAILED)
@@ -263,6 +298,18 @@ namespace OpenLoco::Interop
 #endif // _WIN32
             _offset = static_cast<uint8_t*>(_smallHooks);
         }
+#ifdef _WIN32
+        {
+            DWORD oldProtect{};
+            SIZE_T protectSize = size - (static_cast<uint8_t*>(_smallHooks) - _offset);
+            BOOL protectResult = VirtualProtect(reinterpret_cast<void*>(_offset), protectSize, PAGE_READWRITE, &oldProtect);
+            if (protectResult)
+            {
+                const auto errCode = static_cast<uint32_t>(GetLastError());
+                fprintf(stderr, "VirtualProtect(rw) for makeJump failed! _offset = %p, size = %lu, GetLastError() = 0x%08x", static_cast<void*>(_offset), protectSize, errCode);
+            }
+        }
+#endif
 
         int i = 0;
 
@@ -284,6 +331,18 @@ namespace OpenLoco::Interop
         uint8_t* ptr = _offset;
 
         _offset += i;
+#ifdef _WIN32
+        {
+            DWORD oldProtect{};
+            SIZE_T protectSize = size - (static_cast<uint8_t*>(_smallHooks) - _offset);
+            BOOL protectResult = VirtualProtect(reinterpret_cast<void*>(_offset), protectSize, PAGE_EXECUTE, &oldProtect);
+            if (protectResult)
+            {
+                const auto errCode = static_cast<uint32_t>(GetLastError());
+                fprintf(stderr, "VirtualProtect(x) for makeJump failed! _offset = %p, size = %lu, GetLastError() = 0x%08x", static_cast<void*>(_offset), protectSize, errCode);
+            }
+        }
+#endif
         return ptr;
     }
 
