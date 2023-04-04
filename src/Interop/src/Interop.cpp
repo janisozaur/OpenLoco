@@ -320,7 +320,7 @@ namespace OpenLoco::Interop
         {
             uint32_t addressLocal = address + bytesWritten;
             size_t sizeLocal = std::min<size_t>(size, 4096 - (addressLocal & 0xFFF));
-            if (!WriteProcessMemory(GetCurrentProcess(), (LPVOID)addressLocal, data + bytesWritten, sizeLocal, nullptr) || log)
+            if (!WriteProcessMemory(GetCurrentProcess(), (LPVOID)addressLocal, reinterprete_cast<uint8_t*>(data) + bytesWritten, sizeLocal, nullptr) || log)
             {
                 const auto errCode = static_cast<uint32_t>(GetLastError());
                 fprintf(stderr, "WriteProcessMemory failed! address = 0x%08x, size = %zu, bytesWritten = %zu, addressLocal = 0x%08x, sizeLocal = %zu, GetLastError() = 0x%08x\n", address, size, bytesWritten, addressLocal, sizeLocal, errCode);
