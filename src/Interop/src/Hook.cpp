@@ -218,6 +218,7 @@ namespace OpenLoco::Interop
             i += 4;
 
             data[i++] = 0xC3; // retn
+            fprintf("Installing hook 0x%08x\n", address);
 
 #ifdef _WIN32
             {
@@ -231,7 +232,7 @@ namespace OpenLoco::Interop
                 }
             }
 #endif
-            writeMemory(address, data, i);
+            writeMemory(address, data, i, true);
 #ifdef _WIN32
             {
                 DWORD oldProtect{};
