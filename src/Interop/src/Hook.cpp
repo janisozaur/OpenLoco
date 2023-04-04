@@ -204,8 +204,8 @@ namespace OpenLoco::Interop
             int32_t i = 0;
             // If hook straddles page boundary, extend it with nop sled until entire hook fits in next page.
             // Hook installation takes 6 bytes, if those 6 bytes straddle page boundary, then we need at most 6 bytes of nops to align
-	    uintptr_t page0Address = address & 0xFFFF'F000;
-	    uintptr_t page1Address = (address + 6) & 0xFFFF'F000;
+            uintptr_t page0Address = address & 0xFFFF'F000;
+            uintptr_t page1Address = (address + 6) & 0xFFFF'F000;
             if (page0Address != page1Address)
             {
                 uint8_t nopCount = 4096 - (address & 0xFFF);
