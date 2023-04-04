@@ -311,7 +311,7 @@ namespace OpenLoco::Interop
 #endif // _WIN32
     }
 
-    void writeMemory(uint32_t address, const void*data, size_t size), bool log
+    void writeMemory(uint32_t address, const void*data, size_t size, bool log)
     {
 #ifdef _WIN32
         // if (address & 0xFFFF'F000 != address
