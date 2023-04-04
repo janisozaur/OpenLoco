@@ -319,7 +319,7 @@ namespace OpenLoco::Interop
         while (bytesWritten != size)
         {
             uint32_t addressLocal = address + bytesWritten;
-            size_t sizeLocal = std::min<size_t>(size, 4096 - (addressLocal & 0xFFF));
+            size_t sizeLocal = std::min<size_t>(size - bytesWritten, 4096 - (addressLocal & 0xFFF));
             if (!WriteProcessMemory(GetCurrentProcess(), (LPVOID)addressLocal, reinterpret_cast<const uint8_t*>(data) + bytesWritten, sizeLocal, nullptr) || log)
             {
                 const auto errCode = static_cast<uint32_t>(GetLastError());
